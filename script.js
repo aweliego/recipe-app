@@ -1,3 +1,6 @@
+//import { API_KEY } from './constants.js' //Cannot use import statement outside a module
+//API_KEY = require('constants.js'); //require is not defined
+
 const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
@@ -42,10 +45,10 @@ getRecipes(API_URL);
 
 async function getIngredients(id) {
   const res = fetch(
-    'https://api.spoonacular.com/recipes/{id}/ingredientWidget.json'
+    'https://api.spoonacular.com/recipes?apiKey=2e29523a99aa4f658af5c757103cc87a&{id}/ingredientWidget.json'
   );
-  const data = await res.json();
-  console.log(data); // logs error 404
+  const data = await res;
+  console.log(data); // logs Response {type: "cors", url: "https://api.spoonacular.com/recipes?apiKey=2e29523…aa4f658af5c757103cc87a&{id}/ingredientWidget.json", redirected: false, status: 200, ok: true, …}
 }
 
 function showRecipes(recipes) {
@@ -147,7 +150,7 @@ form.addEventListener('submit', (e) => {
 
 // const xhr = new XMLHttpRequest();
 //     const url =
-//       'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList=${title}';
+//       'https://api.spoonacular.com/recipes/parseIngredients?apiKey={API_KEY}&ingredientList=${title}';
 //     const data = JSON.stringify({ id: '200' });
 
 //     //xhr.responseType = 'json';
