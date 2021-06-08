@@ -8,6 +8,8 @@ const API_URL =
 //const INGREDIENTS_URL =
 ('https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList');
 
+//const INGREDIENTS_URL = 'https://api.spoonacular.com/recipes/{id}/ingredientWidget.json'
+
 const SEARCH_API =
   'https://api.spoonacular.com/recipes/complexSearch?apiKey=2e29523a99aa4f658af5c757103cc87a&number=15&query="';
 
@@ -24,27 +26,34 @@ async function getRecipes(url) {
 
 getRecipes(API_URL);
 
-async function getIngredients(recipe) {
-  const INGREDIENTS_URL =
-    'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList';
-  const res = await fetch(INGREDIENTS_URL, {
-    method: 'POST',
-    body: JSON.stringify(recipe),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  });
-  console.log(res);
+// async function getIngredients(recipe) {
+//   const INGREDIENTS_URL =
+//     'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList={recipe}';
+//   const res = await fetch(INGREDIENTS_URL, {
+//     method: 'POST',
+//     body: JSON.stringify(recipe),
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//   });
+//   //console.log(res);
+//   const data = await res.json();
+
+//   console.log(data); // logs error 400 "We're so sorry, something went wrong. If this error persists, please contact us."
+// }
+
+async function getIngredients(id) {
+  const res = fetch(
+    'https://api.spoonacular.com/recipes/{id}/ingredientWidget.json'
+  );
   const data = await res.json();
-
-  console.log(data);
+  console.log(data); // logs error 404
 }
-
-//getIngredients(INGREDIENTS_URL);
 
 function showRecipes(recipes) {
   main.innerHTML = '';
 
   recipes.forEach((recipe) => {
     const {
+      id,
       title,
       readyInMinutes,
       servings,
@@ -54,9 +63,11 @@ function showRecipes(recipes) {
     } = recipe;
     //console.log(recipe.image);
     //console.log(recipe.dishTypes);
-
+    //console.log(id);
     //Get ingredients
-    getIngredients(recipe);
+    //getIngredients(recipe.title);
+
+    getIngredients(id);
 
     // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing)
     if (recipe.image !== undefined) {
