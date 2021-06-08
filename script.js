@@ -5,8 +5,8 @@ const search = document.getElementById('search');
 const API_URL =
   'https://api.spoonacular.com/recipes/random?apiKey=2e29523a99aa4f658af5c757103cc87a&number=15';
 
-const INGREDIENTS_URL =
-  'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList';
+//const INGREDIENTS_URL =
+('https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList');
 
 const SEARCH_API =
   'https://api.spoonacular.com/recipes/complexSearch?apiKey=2e29523a99aa4f658af5c757103cc87a&number=15&query="';
@@ -24,14 +24,21 @@ async function getRecipes(url) {
 
 getRecipes(API_URL);
 
-// async function getIngredients(url) {
-//   const res = await fetch(url);
-//   const data = await res.json();
+async function getIngredients(recipe) {
+  const INGREDIENTS_URL =
+    'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList';
+  const res = await fetch(INGREDIENTS_URL, {
+    method: 'POST',
+    body: JSON.stringify(recipe),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+  console.log(res);
+  const data = await res.json();
 
-//   console.log(data); // getting error 405, try again later
-// }
+  console.log(data);
+}
 
-// //getIngredients(INGREDIENTS_URL);
+//getIngredients(INGREDIENTS_URL);
 
 function showRecipes(recipes) {
   main.innerHTML = '';
@@ -45,29 +52,13 @@ function showRecipes(recipes) {
       dishTypes,
       instructions,
     } = recipe;
-    console.log(recipe.image);
-    console.log(recipe.dishTypes);
+    //console.log(recipe.image);
+    //console.log(recipe.dishTypes);
 
     //Get ingredients
+    getIngredients(recipe);
 
-const xhr = new XMLHttpRequest();
-const url = 'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList=${title}';
-const data = JSON.stringify({id: '200'});
-
-//xhr.responseType = 'json';
-xhr.onreadystatechange = () => {
-  if (xhr.readyState === XMLHttpRequest.DONE) {
-    //console.log(data);
-    console.log(xhr.responseText); // {"status":"failure", "code":400,"message":"The form parameter 'ingredientList' must not be null."}
-  }
-}
-
-xhr.open('POST', url);
-//xhr.setRequestHeader("Accept", "application/json");
-xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-xhr.send(data);
-
-    // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing
+    // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing)
     if (recipe.image !== undefined) {
       const recipeEl = document.createElement('div');
       recipeEl.classList.add('recipe-card');
@@ -143,3 +134,20 @@ form.addEventListener('submit', (e) => {
   }
 });
 
+// const xhr = new XMLHttpRequest();
+//     const url =
+//       'https://api.spoonacular.com/recipes/parseIngredients?apiKey=2e29523a99aa4f658af5c757103cc87a&ingredientList=${title}';
+//     const data = JSON.stringify({ id: '200' });
+
+//     //xhr.responseType = 'json';
+//     xhr.onreadystatechange = () => {
+//       if (xhr.readyState === XMLHttpRequest.DONE) {
+//         //console.log(data);
+//         console.log(xhr.responseText); // {"status":"failure", "code":400,"message":"The form parameter 'ingredientList' must not be null."}
+//       }
+//     };
+
+//     xhr.open('POST', url);
+//     //xhr.setRequestHeader("Accept", "application/json");
+//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xhr.send(data);
