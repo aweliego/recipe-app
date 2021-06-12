@@ -14,7 +14,7 @@ const API_URL =
 //const INGREDIENTS_URL = 'https://api.spoonacular.com/recipes/{id}/ingredientWidget.json'
 
 const SEARCH_API =
-  'https://api.spoonacular.com/recipes/complexSearch?apiKey=2e29523a99aa4f658af5c757103cc87a&number=15&query="';
+  'https://api.spoonacular.com/recipes/complexSearch?apiKey=2e29523a99aa4f658af5c757103cc87a&number=15&query=';
 
 // Get initial recipes
 async function getRecipes(url) {
@@ -45,7 +45,7 @@ getRecipes(API_URL);
 
 async function getIngredients(id) {
   const res = fetch(
-    'https://api.spoonacular.com/recipes?apiKey=2e29523a99aa4f658af5c757103cc87a&{id}/ingredientWidget.json'
+    'https://api.spoonacular.com/recipes?apiKey=2e29523a99aa4f658af5c757103cc87a&${id}/ingredientWidget.json'
   );
   const data = await res;
   console.log(data); // logs Response {type: "cors", url: "https://api.spoonacular.com/recipes?apiKey=2e29523…aa4f658af5c757103cc87a&{id}/ingredientWidget.json", redirected: false, status: 200, ok: true, …}
