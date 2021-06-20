@@ -1,2 +1,4 @@
 .DS_Store
-constants.js
+src/constants.mjs
+node_modules/
+.vscode/
