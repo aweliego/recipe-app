@@ -9,7 +9,7 @@ const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 
-const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=1`;
+const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=2`;
 
 //const INGREDIENTS_URL =
 `https://api.spoonacular.com/recipes/parseIngredients?apiKey=${API_KEY}&ingredientList`;
@@ -62,7 +62,6 @@ function showRecipes(recipes) {
 
   recipes.forEach((recipe) => {
     const {
-      id,
       title,
       readyInMinutes,
       servings,
@@ -70,13 +69,6 @@ function showRecipes(recipes) {
       dishTypes,
       instructions,
     } = recipe;
-    //console.log(recipe.image);
-    //console.log(recipe.dishTypes);
-    //console.log(id);
-
-    //Get ingredients
-    getIngredients(id);
-    //getIngredients(title);
 
     // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing)
     if (recipe.image !== undefined) {
@@ -97,7 +89,7 @@ function showRecipes(recipes) {
         </div>
         <div class="ingredients">
           <h4>Ingredients</h4>
-          <p>Ingredients list</p>
+          <div class="show-ingredients">Show list</div>
         </div>
         <div class="recipe-instructions">
           <h4>Cooking Steps</h4>
@@ -127,6 +119,29 @@ function showRecipes(recipes) {
     });
     function removeActiveClasses() {
       cards.forEach((card) => card.classList.remove('active'));
+    }
+  });
+
+  // Display ingredients
+  const displayBtns = document.querySelectorAll('.show-ingredients');
+
+  displayBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      removeActiveClasses();
+      btn.classList.add('active');
+
+      // Get ingredients
+      getIngredients(recipes[1].id);
+      console.log(ingredients);
+      // Show ingredients
+      btn.innerHTML =
+        'Ingredient1, ingredient2, ingredient3, ingredient4, ingredient5';
+      // add ingredients as innerHTML of btn
+    });
+
+    function removeActiveClasses() {
+      displayBtns.forEach((btn) => btn.classList.remove('active'));
+      btn.style.backgroundColor = 'transparent';
     }
   });
 }
