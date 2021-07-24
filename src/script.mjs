@@ -2,69 +2,60 @@ import { API_KEY } from './constants.mjs';
 
 console.log(API_KEY);
 console.log(
-  'https://api.spoonacular.com/recipes/random?apiKey=' + API_KEY + '&number=15'
+  `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=1`
 );
 
 const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 
-const API_URL =
-  'https://api.spoonacular.com/recipes/random?apiKey=' + API_KEY + '&number=15';
+const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=1`;
 
 //const INGREDIENTS_URL =
-'https://api.spoonacular.com/recipes/parseIngredients?apiKey=' +
-  API_KEY +
-  '&ingredientList';
+`https://api.spoonacular.com/recipes/parseIngredients?apiKey=${API_KEY}&ingredientList`;
 
-const SEARCH_API =
-  'https://api.spoonacular.com/recipes/complexSearch?apiKey=' +
-  API_KEY +
-  '&number=15&query=';
+const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=15&query=`;
 
 // Get initial recipes
 async function getRecipes(url) {
   const res = await fetch(url);
   const data = await res.json();
-
+  console.log(data);
   //console.log(data.recipes[0].title);
   //console.log (data.recipes[0].analyzedInstructions[0].steps[1].ingredients) // gets array of ingredients of first recipe
   showRecipes(data.recipes);
+
   //console.log(data.results[0].title)
 }
 
 getRecipes(API_URL);
 
-// First attempt
-async function getIngredients(recipe) {
-  const INGREDIENTS_URL =
-    'https://api.spoonacular.com/recipes/parseIngredients?apiKey=' +
-    API_KEY +
-    '&ingredientList=' +
-    recipe;
-  const res = await fetch(INGREDIENTS_URL, {
-    method: 'POST',
-    // body: JSON.stringify(recipe),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  });
-  //console.log(res);
-  const data = await res.json();
+// With the parseIngredients endpoint
+// async function getIngredients(recipe) {
+//   const INGREDIENTS_URL =
+//     'https://api.spoonacular.com/recipes/parseIngredients?apiKey=' +
+//     API_KEY +
+//     '&ingredientList=' +
+//     recipe;
+//   const res = await fetch(INGREDIENTS_URL, {
+//     method: 'POST',
+//     // body: JSON.stringify(recipe),
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//   });
+//   console.log(res);
+//   const data = await res.json();
 
-  console.log(data); // logs error 400 "We're so sorry, something went wrong. If this error persists, please contact us."
-}
-
-// Second attempt
-// async function getIngredients(id) {
-//   const res = fetch(
-//     'https://api.spoonacular.com/recipes?apiKey=' +
-//       API_KEY +
-//       '&' +
-//       id +
-//       '/ingredientWidget.json'
-//   );
-//   const data = await res;
-//   console.log(data); // logs Response {type: "cors", url: "https://api.spoonacular.com/recipes?apiKey=${API_KEY}&${id}/ingredientWidget.json", redirected: false, status: 200, ok: true, …}
+//   console.log(data);
 // }
+
+// With the ingredientsById endpoint
+async function getIngredients(id) {
+  const res = fetch(
+    `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json?apiKey=${API_KEY}`
+  );
+  const data = await res;
+  console.log(data.json());
+}
 
 function showRecipes(recipes) {
   main.innerHTML = '';
@@ -84,8 +75,8 @@ function showRecipes(recipes) {
     //console.log(id);
 
     //Get ingredients
-    //getIngredients(id);
-    getIngredients(title);
+    getIngredients(id);
+    //getIngredients(title);
 
     // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing)
     if (recipe.image !== undefined) {
@@ -163,20 +154,8 @@ form.addEventListener('submit', (e) => {
   }
 });
 
-// const xhr = new XMLHttpRequest();
-//     const url =
-//       'https://api.spoonacular.com/recipes/parseIngredients?apiKey=' + API_KEY + '&ingredientList=${title}';
-//     const data = JSON.stringify({ id: '200' });
-
-//     //xhr.responseType = 'json';
-//     xhr.onreadystatechange = () => {
-//       if (xhr.readyState === XMLHttpRequest.DONE) {
-//         //console.log(data);
-//         console.log(xhr.responseText); // {"status":"failure", "code":400,"message":"The form parameter 'ingredientList' must not be null."}
-//       }
-//     };
-
-//     xhr.open('POST', url);
-//     //xhr.setRequestHeader("Accept", "application/json");
-//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-//     xhr.send(data);
+// Next time:
+// try again the getIngredientsbyId(), should work (we just ran out of API calls)
+// replace concatenation in URL with template literals
+// display ingredients by clicking a button instead of on page load (to save API calls)
+// look into https://spoonacular.com/food-api/docs#Get-Recipe-Information to access ingredients
