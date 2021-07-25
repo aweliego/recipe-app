@@ -156,6 +156,10 @@ i {
   font-size: 15px;
 }
 
+.ingredients p {
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .recipe-card.active {
     width: 100vw;
