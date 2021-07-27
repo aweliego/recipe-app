@@ -6,7 +6,7 @@ const search = document.getElementById('search');
 
 const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=2`;
 
-//const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=2&query=`;
+const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=2&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
 
 // Get initial recipes
 async function getRecipes(url) {
@@ -18,8 +18,18 @@ async function getRecipes(url) {
 
 getRecipes(API_URL);
 
+// search new recipes
+async function searchRecipes(url) {
+  const res = await fetch(url);
+  const data = await res.json();
+  console.log(data);
+  showRecipes(data.results);
+}
+
 function showRecipes(recipes) {
   main.innerHTML = '';
+
+  console.log(recipes);
 
   recipes.forEach((recipe) => {
     const {
@@ -30,7 +40,17 @@ function showRecipes(recipes) {
       dishTypes,
       instructions,
       extendedIngredients,
+      analyzedInstructions,
     } = recipe;
+
+    const getInstructions = () => {
+      if (instructions) {
+        return instructions;
+      } else {
+        console.log(analyzedInstructions.steps); // undefined
+        //console.log(analyzedInstructions.steps.map((instruction) => instruction.step));
+      }
+    };
 
     const getIngredients = () =>
       extendedIngredients.map((ingredient) => ingredient.name);
@@ -57,7 +77,7 @@ function showRecipes(recipes) {
         <div class="recipe-instructions">
           <h4>Cooking Steps</h4>
           <p>
-            ${instructions}
+            ${getInstructions()}
           </p>
         </div>
       </div>`;
@@ -90,11 +110,16 @@ form.addEventListener('submit', (e) => {
   const searchTerm = search.value;
 
   if (searchTerm && searchTerm !== '') {
-    getRecipes(SEARCH_API + searchTerm);
-    //console.log(getRecipes(SEARCH_API + searchTerm))
+    searchRecipes(SEARCH_API + searchTerm);
 
     search.value = '';
   } else {
     window.location.reload();
   }
 });
+
+// no instructions property in the search recipe object, only analysed instructions. Analysed instructions are included even if I remove the parameter 'instructionsRequired=true"...
+
+// create getInstructions()
+// if instructions prop exist, just return the instructions
+// else map analysedInstructions to return the value of the step property only --> that returns undefined
