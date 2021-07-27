@@ -18,18 +18,24 @@ async function getRecipes(url) {
 
 getRecipes(API_URL);
 
-// search new recipes
+// Search new recipes
 async function searchRecipes(url) {
   const res = await fetch(url);
   const data = await res.json();
   console.log(data);
-  showRecipes(data.results);
+  if (data.results.length === 0) {
+    main.innerHTML = '';
+    const noRecipeFound = document.createElement('div');
+    noRecipeFound.classList.add('not-found');
+    noRecipeFound.innerHTML = `<p>Sorry! We couldn't find any recipe based on your search.</p>`;
+    main.append(noRecipeFound);
+  } else {
+    showRecipes(data.results);
+  }
 }
 
 function showRecipes(recipes) {
   main.innerHTML = '';
-
-  console.log(recipes);
 
   recipes.forEach((recipe) => {
     const {

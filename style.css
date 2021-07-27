@@ -19,7 +19,7 @@ header {
 }
 
 header span {
-  margin-top: 25px;
+  margin-bottom: 20px;
 }
 
 .search {
@@ -158,6 +158,12 @@ i {
 
 .ingredients p {
   text-align: center;
+}
+
+.not-found {
+  font-size: 20px;
+  font-style: italic;
+  color: rgb(165, 70, 36);
 }
 
 @media (max-width: 900px) {
