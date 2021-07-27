@@ -59,7 +59,10 @@ function showRecipes(recipes) {
     };
 
     const getIngredients = () =>
-      extendedIngredients.map((ingredient) => ingredient.name);
+      extendedIngredients.map(
+        (ingredient) =>
+          `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`
+      );
 
     // Hide recipes that don’t have an image (however they can still be returned as results from our API call, so there might be fewer than 15 recipes showing)
     if (recipe.image !== undefined) {
