@@ -8,7 +8,7 @@ const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&nu
 
 const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=2&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
 
-// Get initial recipes
+// ****************** Get initial recipes ******************
 async function getRecipes(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -18,7 +18,7 @@ async function getRecipes(url) {
 
 getRecipes(API_URL);
 
-// Search new recipes
+// ****************** Search for new recipes ******************
 async function searchRecipes(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -34,6 +34,21 @@ async function searchRecipes(url) {
   }
 }
 
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const searchTerm = search.value;
+
+  if (searchTerm && searchTerm !== '') {
+    searchRecipes(SEARCH_API + searchTerm);
+
+    search.value = '';
+  } else {
+    window.location.reload();
+  }
+});
+
+// ****************** Display recipe cards and recipe info ******************
 function showRecipes(recipes) {
   main.innerHTML = '';
 
@@ -73,6 +88,7 @@ function showRecipes(recipes) {
         alt=""
       />
       <h3 class="recipe-title">${title}</h3>
+      <button class="save-btn">+</button>
       <div class="recipe-text">
         <div class="recipe-info">
           <p><i class="far fa-clock"></i>${readyInMinutes} min</p>
@@ -106,26 +122,22 @@ function showRecipes(recipes) {
     function removeActiveClasses() {
       cards.forEach((card) => card.classList.remove('active'));
     }
+
+    // save to local storage
+    const saveBtns = document.querySelectorAll('.save-btn');
+
+    saveBtns.forEach((saveBtn) => {
+      saveBtn.addEventListener('click', () => {
+        //console.log('it works');
+        window.localStorage.setItem('recipe', JSON.stringify(recipe)); // only second recipe is set, why?
+      });
+    });
   });
 }
 
+// ****************** Helper functions ******************
 const formatArray = (array) =>
   array.map((el) => el.charAt(0).toUpperCase() + el.slice(1)).join(' - ');
-
-// Search for new recipes
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const searchTerm = search.value;
-
-  if (searchTerm && searchTerm !== '') {
-    searchRecipes(SEARCH_API + searchTerm);
-
-    search.value = '';
-  } else {
-    window.location.reload();
-  }
-});
 
 // no instructions property in the search recipe object, only analysed instructions. Analysed instructions are included even if I remove the parameter 'instructionsRequired=true"...
 
