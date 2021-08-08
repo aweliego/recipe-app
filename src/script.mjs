@@ -6,7 +6,7 @@ const search = document.getElementById('search');
 
 const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=2`;
 
-const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=2&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
+const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=3&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
 
 // ****************** Get initial recipes ******************
 async function getRecipes(url) {
@@ -68,8 +68,13 @@ function showRecipes(recipes) {
       if (instructions) {
         return instructions;
       } else {
-        console.log(analyzedInstructions.steps); // undefined
-        //console.log(analyzedInstructions.steps.map((instruction) => instruction.step));
+        const stepSection = document.createElement('ol');
+        analyzedInstructions[0].steps.forEach((step) => {
+          const cookingStep = document.createElement('li');
+          cookingStep.innerHTML = `${step.step}`;
+          stepSection.appendChild(cookingStep);
+        });
+        return stepSection.outerHTML;
       }
     };
 
@@ -101,9 +106,7 @@ function showRecipes(recipes) {
         </div>
         <div class="recipe-instructions">
           <h4>Cooking Steps</h4>
-          <p>
             ${getInstructions()}
-          </p>
         </div>
       </div>`;
 
@@ -129,7 +132,7 @@ function showRecipes(recipes) {
     saveBtns.forEach((saveBtn) => {
       saveBtn.addEventListener('click', () => {
         //console.log('it works');
-        window.localStorage.setItem('recipe', JSON.stringify(recipe)); // only second recipe is set, why?
+        window.localStorage.setItem('recipe', JSON.stringify(recipe)); // only last recipe is set, why?
       });
     });
   });
@@ -138,9 +141,3 @@ function showRecipes(recipes) {
 // ****************** Helper functions ******************
 const formatArray = (array) =>
   array.map((el) => el.charAt(0).toUpperCase() + el.slice(1)).join(' - ');
-
-// no instructions property in the search recipe object, only analysed instructions. Analysed instructions are included even if I remove the parameter 'instructionsRequired=true"...
-
-// create getInstructions()
-// if instructions prop exist, just return the instructions
-// else map analysedInstructions to return the value of the step property only --> that returns undefined
