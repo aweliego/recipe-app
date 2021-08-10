@@ -126,16 +126,46 @@ function showRecipes(recipes) {
       cards.forEach((card) => card.classList.remove('active'));
     }
 
-    // save to local storage
+    // save feature
     const saveBtns = document.querySelectorAll('.save-btn');
 
     saveBtns.forEach((saveBtn) => {
-      saveBtn.addEventListener('click', () => {
-        //console.log('it works');
-        window.localStorage.setItem('recipe', JSON.stringify(recipe)); // only last recipe is set, why?
-      });
+      saveBtn.addEventListener('click', addToFavourites(recipe));
+      // saveBtn.addEventListener('click', () => {
+      //   console.log('hello');
+      // });
     });
   });
+}
+
+// ****************** Save to favourites ******************
+
+function addToFavourites(recipe) {
+  createRecipe(recipe);
+  displayAlert('recipe added to Favourites', 'success');
+  storeRecipe(recipe);
+}
+
+function createRecipe(recipe) {
+  // This should render the recipe card in the favourites.html page
+  // Create HTML element such as in showRecipes()
+  // Set up delete button
+}
+
+function displayAlert(text, action) {
+  // set up alerts
+}
+
+function storeRecipe(recipe) {
+  let myFavourites = getLocalStorage();
+  myFavourites.push(recipe);
+  localStorage.setItem('favourites', JSON.stringify(myFavourites));
+}
+
+function getLocalStorage() {
+  return localStorage.getItem('favourites')
+    ? JSON.parse(localStorage.getItem('favourites'))
+    : [];
 }
 
 // ****************** Helper functions ******************
