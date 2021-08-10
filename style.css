@@ -121,7 +121,8 @@ main {
 }
 
 .recipe-card.active .save-btn {
-  left: 94%;
+  left: 94.5%;
+  transform: translateX(100%);
 }
 
 .recipe-card.active .recipe-text {
@@ -194,6 +195,11 @@ i {
 @media (max-width: 900px) {
   .recipe-card.active {
     width: 100vw;
+  }
+
+  .recipe-card.active .save-btn {
+    left: 87%;
+    /* transform: translateX(100%); */
   }
 
   .recipe-card::-webkit-scrollbar {
