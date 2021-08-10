@@ -10,6 +10,35 @@ body {
   margin: 0;
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: whitesmoke;
+  background-color: coral;
+  padding: 10px;
+  margin: 10px 20px 0 0;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+a:focus {
+  outline: 0;
+}
+
+a:active {
+  transform: scale(0.98);
+}
+
+.fa-heart {
+  margin-left: 5px;
+}
+
 header {
   display: flex;
   flex-direction: column;

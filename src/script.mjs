@@ -3,6 +3,7 @@ import { API_KEY } from './constants.mjs';
 const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
+const favBtn = document.getElementById('fav-btn');
 
 const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=2`;
 
