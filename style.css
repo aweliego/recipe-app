@@ -39,6 +39,29 @@ a:active {
   margin-left: 5px;
 }
 
+.alert {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 10px;
+  width: auto;
+  padding: 5px 40px;
+  border-radius: 2px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  transform: translateX(-115%);
+  transition: transform 0.5s ease;
+}
+
+.alert-success {
+  transform: translateX(0);
+  background-color: yellow;
+}
+
+.alert-danger {
+  transform: translateX(110%);
+  background-color: orangered;
+}
+
 header {
   display: flex;
   flex-direction: column;

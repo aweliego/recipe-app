@@ -4,6 +4,7 @@ const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 const favBtn = document.getElementById('fav-btn');
+const alert = document.querySelector('.alert');
 
 const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=2`;
 
@@ -131,7 +132,7 @@ function showRecipes(recipes) {
     const saveBtns = document.querySelectorAll('.save-btn');
 
     saveBtns.forEach((saveBtn) => {
-      saveBtn.addEventListener('click', addToFavourites(recipe));
+      saveBtn.addEventListener('click', addToFavourites(recipe)); // function is called on page load instead of on btn click, why?
       // saveBtn.addEventListener('click', () => {
       //   console.log('hello');
       // });
@@ -143,7 +144,7 @@ function showRecipes(recipes) {
 
 function addToFavourites(recipe) {
   createRecipe(recipe);
-  displayAlert('recipe added to Favourites', 'success');
+  displayAlert('Recipe added to Favourites', 'success');
   storeRecipe(recipe);
 }
 
@@ -154,7 +155,12 @@ function createRecipe(recipe) {
 }
 
 function displayAlert(text, action) {
-  // set up alerts
+  alert.textContent = text;
+  alert.classList.add(`alert-${action}`);
+  setTimeout(() => {
+    alert.textContent = '';
+    alert.classList.remove(`alert-${action}`);
+  }, 3000);
 }
 
 function storeRecipe(recipe) {
