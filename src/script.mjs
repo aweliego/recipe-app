@@ -131,13 +131,43 @@ function showRecipes(recipes) {
     // save feature
     const saveBtns = document.querySelectorAll('.save-btn');
 
-    // saveBtns[saveBtns.length - 1].addEventListener('click', () => {
-    //   addToFavourites(recipe);
-    // });
+    saveBtns[saveBtns.length - 1].addEventListener('click', (e) => {
+      // if the mouse position has the coordinates of the saveBtn and the recipe-card does not contain the active class, remove the active class (when we click on the card or saveBtn it will be active so we want to remove it right away)
 
-    saveBtns[saveBtns.length - 1].addEventListener('click', () =>
-      addToFavourites(recipe)
-    );
+      // Try 1
+      let saveBtnSize = e.target.getBoundingClientRect();
+      console.log(saveBtnSize);
+      //let x = e.clientX - saveBtnSize.left;
+      //let y = e.clientY - saveBtnSize.top;
+
+      // Try 2
+      // mouse position in viewport
+      const x = e.clientX;
+      const y = e.clientY;
+
+      // where top and left of button start
+      const buttonTop = e.target.offsetTop;
+      const buttonLeft = e.target.offsetLeft;
+
+      // calculating the position of our click inside the button >> only useful to assign those coordinates to an element?
+      const xInside = x - buttonLeft;
+      const yInside = y - buttonTop;
+
+      // console.log(x, y);
+      // console.log(buttonTop, buttonLeft);
+      // console.log(xInside, yInside);
+      // console.log(e.target);
+
+      if (xInside === saveBtnSize.left && yInside === saveBtnSize.top) {
+        console.log('You are inside');
+      } else {
+        console.log('You are outside');
+        console.log(xInside, yInside);
+        console.log(saveBtnSize.left, saveBtnSize.top);
+      }
+
+      addToFavourites(recipe);
+    });
   });
 }
 
