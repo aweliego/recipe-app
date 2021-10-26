@@ -1,3 +1,5 @@
+export { API_URL, showRecipes, getRecipes, formatArray, main, favBtn };
+
 import { API_KEY } from './constants.mjs';
 
 const main = document.getElementById('main');
@@ -174,15 +176,8 @@ function showRecipes(recipes) {
 // ****************** Save to favourites ******************
 
 function addToFavourites(recipe) {
-  createRecipe(recipe);
   displayAlert('Recipe added to Favourites', 'success');
   storeRecipe(recipe);
-}
-
-function createRecipe(recipe) {
-  // This should render the recipe card in the favourites.html page
-  // Create HTML element such as in showRecipes()
-  // Set up delete button
 }
 
 function displayAlert(text, action) {
@@ -200,11 +195,6 @@ function storeRecipe(recipe) {
   localStorage.setItem('favourites', JSON.stringify(myFavourites));
 }
 
-function getLocalStorage() {
-  return localStorage.getItem('favourites')
-    ? JSON.parse(localStorage.getItem('favourites'))
-    : [];
-}
 
 // ****************** Helper functions ******************
 const formatArray = (array) =>
