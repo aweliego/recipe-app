@@ -101,7 +101,9 @@ function showRecipes(recipes) {
       <div class="recipe-text">
         <div class="recipe-info">
           <p><i class="far fa-clock"></i>${readyInMinutes} min</p>
-          <p><i class="fas fa-utensils"></i>${servings} servings</p>
+          <p><i class="fas fa-utensils"></i>${
+            servings < 2 ? `${servings} serving` : `${servings} servings`
+          }</p>
           <p><i class="fas fa-book-reader"></i>${formatArray(dishTypes)}</p>
         </div>
         <div class="ingredients">
@@ -194,7 +196,6 @@ function storeRecipe(recipe) {
   myFavourites.push(recipe);
   localStorage.setItem('favourites', JSON.stringify(myFavourites));
 }
-
 
 // ****************** Helper functions ******************
 const formatArray = (array) =>
