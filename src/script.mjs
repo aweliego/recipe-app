@@ -1,16 +1,13 @@
-export { API_URL, showRecipes, getRecipes, formatArray, main, favBtn };
-
 import { API_KEY } from './constants.mjs';
 
+console.log(API_KEY);
 const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
-const favBtn = document.getElementById('fav-btn');
-const alert = document.querySelector('.alert');
 
-const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=5`;
+const API_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=15`;
 
-const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=3&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
+const SEARCH_API = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=15&addRecipeInformation=true&fillIngredients=true&instructionsRequired=true&query=`;
 
 // ****************** Get initial recipes ******************
 async function getRecipes(url) {
@@ -97,7 +94,6 @@ function showRecipes(recipes) {
         alt=""
       />
       <h3 class="recipe-title">${title}</h3>
-      <button class="save-btn">+</button>
       <div class="recipe-text">
         <div class="recipe-info">
           <p><i class="far fa-clock"></i>${readyInMinutes} min</p>
@@ -131,70 +127,7 @@ function showRecipes(recipes) {
     function removeActiveClasses() {
       cards.forEach((card) => card.classList.remove('active'));
     }
-
-    // save feature
-    const saveBtns = document.querySelectorAll('.save-btn');
-
-    saveBtns[saveBtns.length - 1].addEventListener('click', (e) => {
-      // if the mouse position has the coordinates of the saveBtn and the recipe-card does not contain the active class, remove the active class (when we click on the card or saveBtn it will be active so we want to remove it right away)
-
-      // Try 1
-      let saveBtnSize = e.target.getBoundingClientRect();
-      console.log(saveBtnSize);
-      //let x = e.clientX - saveBtnSize.left;
-      //let y = e.clientY - saveBtnSize.top;
-
-      // Try 2
-      // mouse position in viewport
-      const x = e.clientX;
-      const y = e.clientY;
-
-      // where top and left of button start
-      const buttonTop = e.target.offsetTop;
-      const buttonLeft = e.target.offsetLeft;
-
-      // calculating the position of our click inside the button >> only useful to assign those coordinates to an element?
-      const xInside = x - buttonLeft;
-      const yInside = y - buttonTop;
-
-      // console.log(x, y);
-      // console.log(buttonTop, buttonLeft);
-      // console.log(xInside, yInside);
-      // console.log(e.target);
-
-      if (xInside === saveBtnSize.left && yInside === saveBtnSize.top) {
-        console.log('You are inside');
-      } else {
-        console.log('You are outside');
-        console.log(xInside, yInside);
-        console.log(saveBtnSize.left, saveBtnSize.top);
-      }
-
-      addToFavourites(recipe);
-    });
   });
-}
-
-// ****************** Save to favourites ******************
-
-function addToFavourites(recipe) {
-  displayAlert('Recipe added to Favourites', 'success');
-  storeRecipe(recipe);
-}
-
-function displayAlert(text, action) {
-  alert.textContent = text;
-  alert.classList.add(`alert-${action}`);
-  setTimeout(() => {
-    alert.textContent = '';
-    alert.classList.remove(`alert-${action}`);
-  }, 3000);
-}
-
-function storeRecipe(recipe) {
-  let myFavourites = getLocalStorage();
-  myFavourites.push(recipe);
-  localStorage.setItem('favourites', JSON.stringify(myFavourites));
 }
 
 // ****************** Helper functions ******************
